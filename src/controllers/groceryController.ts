@@ -11,7 +11,23 @@ const responseService = new ResponseService();
  * @returns
  */
 
-const addGroceryItem = async (req: Request, res: Response) => {
+const bulkInsert = async (req: Request, res: Response) => {
+  try {
+    await db.tbl_grocery_masters.bulkCreate(req.body);
+    return responseService.sent(res, 200, [], "Data inserted successfully");
+  } catch (error: any) {
+    return responseService.sent(res, 500, [], error.message);
+  }
+};
+
+/**
+ *
+ * @param req
+ * @param res
+ * @returns
+ */
+
+const create = async (req: Request, res: Response) => {
   try {
     const { name, price, quantity } = req.body as CreateGroceryItemDto;
     let authToken = req.user;
@@ -39,8 +55,21 @@ const addGroceryItem = async (req: Request, res: Response) => {
  * @returns
  */
 
-const getGroceryItems = async (req: Request, res: Response) => {
+const groceryList = async (req: Request, res: Response) => {
   try {
+    const groceryData = await db.tbl_grocery_masters.findAll({
+      attributes: ["id", "name", "price", "quantity", "created_by"],
+      //   include: [
+      //     {
+      //       model: db.tbl_user_masters,
+      //       as: "grocery_user",
+      //       through: { attributes: [] },
+      //       attributes: ["id", "first_name", "last_name", "email"],
+      //       required: false,
+      //     },
+      //   ],
+    });
+    return responseService.sent(res, 200, groceryData);
   } catch (error: any) {
     console.log("get grocery items error................", error);
     return responseService.sent(res, 500, [], error.message);
@@ -93,11 +122,12 @@ const updateInventory = async (req: Request, res: Response) => {
 };
 
 const groceryController = {
-  addGroceryItem,
-  getGroceryItems,
+  create,
+  groceryList,
   removeGroceryItem,
   updateGroceryItem,
   updateInventory,
+  bulkInsert,
 };
 
 export default groceryController;

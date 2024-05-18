@@ -2,18 +2,17 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("tbl_grocery_masters", {
+    await queryInterface.createTable("tbl_grocery_user_mappings", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
-        type: Sequelize.STRING,
-      },
-      price: {
+      grocery_id: {
         type: Sequelize.INTEGER,
+        allowNull: true,
+        references: { model: { tableName: "tbl_grocery_masters" }, key: "id" },
       },
       quantity: {
         type: Sequelize.INTEGER,
@@ -48,6 +47,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("tbl_grocery_masters");
+    await queryInterface.dropTable("tbl_grocery_user_mappings");
   },
 };

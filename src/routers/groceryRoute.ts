@@ -11,12 +11,23 @@ router.post(
   auth.authMiddleware,
   auth.isAdmin,
   validateDto(CreateGroceryItemDto),
-  groceryController.addGroceryItem
+  groceryController.create
 );
 router.post("/update/:id", groceryController.updateGroceryItem);
 router.post("/update/:id/inventory", groceryController.updateInventory);
 router.post("/remove/:id", groceryController.removeGroceryItem);
+router.post(
+  "/bulkInsert",
+  auth.authMiddleware,
+  auth.isAdmin,
+  groceryController.bulkInsert
+);
 
-router.get("/groceryList", groceryController.getGroceryItems);
+router.get(
+  "/list",
+  auth.authMiddleware,
+  auth.isAdmin,
+  groceryController.groceryList
+);
 
 export default router;

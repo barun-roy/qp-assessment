@@ -1,10 +1,9 @@
 "use strict";
 import { Model, UUIDV4 } from "sequelize";
 
-type GroceryAttributes = {
+type GroceryUserAttributes = {
   id: number;
-  name: string;
-  price: number;
+  grocery_id: number;
   quantity: number;
   created_by: number;
   updated_by: number;
@@ -15,15 +14,17 @@ type GroceryAttributes = {
 };
 
 module.exports = (sequelize: any, DataTypes: any) => {
-  class Grocery extends Model<GroceryAttributes> implements GroceryAttributes {
+  class GroceryUser
+    extends Model<GroceryUserAttributes>
+    implements GroceryUserAttributes
+  {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     id!: number;
-    name!: string;
-    price!: number;
+    grocery_id!: number;
     quantity!: number;
     created_by!: number;
     updated_by!: number;
@@ -33,31 +34,24 @@ module.exports = (sequelize: any, DataTypes: any) => {
     deleted_at!: Date;
     static associate(models: any) {
       // define association here
-      Grocery.hasMany(models.tbl_grocery_user_mappings, {
+      GroceryUser.belongsTo(models.tbl_grocery_masters, {
         foreignKey: "grocery_id",
-        as: "grocery_map",
       });
-      Grocery.belongsTo(models.tbl_user_masters, {
+      GroceryUser.belongsTo(models.tbl_user_masters, {
         foreignKey: "created_by",
         as: "CreatedBy",
       });
-      Grocery.belongsTo(models.tbl_user_masters, {
+      GroceryUser.belongsTo(models.tbl_user_masters, {
         foreignKey: "updated_by",
         as: "UpdatedBy",
       });
-      Grocery.belongsTo(models.tbl_user_masters, {
+      GroceryUser.belongsTo(models.tbl_user_masters, {
         foreignKey: "deleted_by",
         as: "DeletedBy",
       });
-      Grocery.belongsToMany(models.tbl_user_masters, {
-        through: models.tbl_grocery_user_mappings,
-        as: "grocery_user",
-        foreignKey: "grocery_id", // Foreign key in the join table referencing Grocery
-        otherKey: "created_by",
-      });
     }
   }
-  Grocery.init(
+  GroceryUser.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -65,15 +59,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      name: {
-        type: DataTypes.STRING(150),
-        allowNull: false,
-        defaultValue: "",
-      },
-      price: {
+      grocery_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
+        allowNull: true,
       },
       quantity: {
         type: DataTypes.INTEGER,
@@ -107,10 +95,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
     },
     {
       sequelize,
-      modelName: "tbl_grocery_masters",
+      modelName: "tbl_grocery_user_mappings",
       timestamps: false,
       paranoid: true,
     }
   );
-  return Grocery;
+  return GroceryUser;
 };

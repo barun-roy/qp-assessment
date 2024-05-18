@@ -15,10 +15,7 @@ type UserAttributes = {
 };
 
 module.exports = (sequelize: any, DataTypes: any) => {
-  class tbl_user_masters
-    extends Model<UserAttributes>
-    implements UserAttributes
-  {
+  class User extends Model<UserAttributes> implements UserAttributes {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -35,10 +32,22 @@ module.exports = (sequelize: any, DataTypes: any) => {
     deleted_at!: Date;
     static associate(models: any) {
       // define association here
-      // User.belongsToMany(models.Grocery, { through: "UserGroceryMapping" });
+      User.hasMany(models.tbl_grocery_user_mappings, {
+        foreignKey: "created_by",
+      });
+      User.hasMany(models.tbl_grocery_user_mappings, {
+        foreignKey: "updated_by",
+      });
+      User.hasMany(models.tbl_grocery_user_mappings, {
+        foreignKey: "deleted_by",
+      });
+      // User.belongsToMany(models.tbl_grocery_masters, {
+      //   through: models.tbl_grocery_user_mappings,
+      //   as: "UserGrocery",
+      // });
     }
   }
-  tbl_user_masters.init(
+  User.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -92,5 +101,5 @@ module.exports = (sequelize: any, DataTypes: any) => {
       paranoid: true,
     }
   );
-  return tbl_user_masters;
+  return User;
 };

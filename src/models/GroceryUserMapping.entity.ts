@@ -96,8 +96,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
     {
       sequelize,
       modelName: "tbl_grocery_user_mappings",
-      timestamps: false,
-      paranoid: true,
+      timestamps: true, // Enable automatic handling of timestamps
+      paranoid: true, // Enable paranoid mode for soft deletes
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+      deletedAt: "deleted_at",
     }
   );
   return GroceryUser;

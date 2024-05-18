@@ -39,22 +39,22 @@ module.exports = (sequelize: any, DataTypes: any) => {
       });
       Grocery.belongsTo(models.tbl_user_masters, {
         foreignKey: "created_by",
-        as: "CreatedBy",
+        as: "createdByVal",
       });
       Grocery.belongsTo(models.tbl_user_masters, {
         foreignKey: "updated_by",
-        as: "UpdatedBy",
+        as: "updatedByVal",
       });
       Grocery.belongsTo(models.tbl_user_masters, {
         foreignKey: "deleted_by",
-        as: "DeletedBy",
+        as: "deletedByVal",
       });
-      Grocery.belongsToMany(models.tbl_user_masters, {
-        through: models.tbl_grocery_user_mappings,
-        as: "grocery_user",
-        foreignKey: "grocery_id", // Foreign key in the join table referencing Grocery
-        otherKey: "created_by",
-      });
+      // Grocery.belongsToMany(models.tbl_user_masters, {
+      //   through: models.tbl_grocery_user_mappings,
+      //   as: "grocery_user",
+      //   foreignKey: "grocery_id", // Foreign key in the join table referencing Grocery
+      //   otherKey: "created_by",
+      // });
     }
   }
   Grocery.init(
@@ -108,8 +108,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
     {
       sequelize,
       modelName: "tbl_grocery_masters",
-      timestamps: false,
-      paranoid: true,
+      timestamps: true, // Enable automatic handling of timestamps
+      paranoid: true, // Enable paranoid mode for soft deletes
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+      deletedAt: "deleted_at",
     }
   );
   return Grocery;

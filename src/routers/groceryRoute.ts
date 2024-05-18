@@ -15,7 +15,12 @@ router.post(
 );
 router.post("/update/:id", groceryController.updateGroceryItem);
 router.post("/update/:id/inventory", groceryController.updateInventory);
-router.post("/remove/:id", groceryController.removeGroceryItem);
+router.post(
+  "/remove",
+  auth.authMiddleware,
+  auth.isAdmin,
+  groceryController.deleteGrocery
+);
 router.post(
   "/bulkInsert",
   auth.authMiddleware,

@@ -41,6 +41,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
       User.hasMany(models.tbl_grocery_user_mappings, {
         foreignKey: "deleted_by",
       });
+      User.hasMany(models.tbl_grocery_masters, {
+        foreignKey: "created_by",
+      });
       // User.belongsToMany(models.tbl_grocery_masters, {
       //   through: models.tbl_grocery_user_mappings,
       //   as: "UserGrocery",
@@ -97,8 +100,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
     {
       sequelize,
       modelName: "tbl_user_masters",
-      timestamps: false,
-      paranoid: true,
+      timestamps: true, // Enable automatic handling of timestamps
+      paranoid: true, // Enable paranoid mode for soft deletes
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+      deletedAt: "deleted_at",
     }
   );
   return User;

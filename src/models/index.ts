@@ -15,6 +15,7 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, {
     host: config.host,
     dialect: config.dialect,
+    logging:false,
     dialectOptions: {
       useUTC: false,
       dateStrings: true,

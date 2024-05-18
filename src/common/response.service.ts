@@ -40,6 +40,14 @@ export class ResponseService {
             message: message ? message : "Un Authorized",
           });
         break;
+      case 403 /**Forbidden */:
+        res
+          .status(code)
+          .send({
+            success: false,
+            message: message ? message : "Forbidden",
+          });
+        break;
       case 404 /**Not found */:
         res
           .status(code)

@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Apples",
+    "price": 2,
+    "quantity": 10
+  },
+  {
+    "name": "Bananas",
+    "price": 1,
+    "quantity": 15
+  },
+  {
+    "name": "Milk",
+    "price": 3,
+    "quantity": 5
+  },
+  {
+    "name": "Bread",
+    "price": 2,
+    "quantity": 8
+  },
+  {
+    "name": "Eggs",
+    "price": 4,
+    "quantity": 12
+  },
+  {
+    "name": "Cheese",
+    "price": 5,
+    "quantity": 4
+  },
+  {
+    "name": "Oranges",
+    "price": 3,
+    "quantity": 20
+  },
+  {
+    "name": "Cereal",
+    "price": 3,
+    "quantity": 6
+  },
+  {
+    "name": "Pasta",
+    "price": 2,
+    "quantity": 10
+  },
+  {
+    "name": "Tomatoes",
+    "price": 1,
+    "quantity": 12
+  }
+]

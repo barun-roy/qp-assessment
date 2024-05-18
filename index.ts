@@ -3,6 +3,7 @@ import morgan from "morgan";
 
 import db from "./src/models";
 import userRouter from "./src/routers/userRoute";
+import groceryRouter from "./src/routers/groceryRoute";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/grocery", groceryRouter);
 
 db.sequelize
   .authenticate()

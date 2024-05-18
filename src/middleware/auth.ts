@@ -15,7 +15,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
       token,
       "0fb46e81c559d1f94cfaf4c5d3c0912e"
     ) as AuthUser;
-    req.user = decoded
+    req.user = decoded;
 
     next();
   } catch (error) {
@@ -23,4 +23,28 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default { authMiddleware };
+/**
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @returns
+ */
+
+const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let authToken: AuthUser | undefined = req.user;
+    if (authToken) {
+      if (authToken.role !== "admin") {
+        console.log("authToken", authToken);
+        return responseService.sent(res, 403, [], "Forbidden");
+      }
+      next();
+    }
+  } catch (error: any) {
+    console.log("is admin middleware error............", error);
+    return responseService.sent(res, 500, [], error.message);
+  }
+};
+
+export default { authMiddleware, isAdmin };

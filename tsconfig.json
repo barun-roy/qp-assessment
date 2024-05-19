@@ -111,7 +111,7 @@
   "exclude": ["node_modules"],
   "include": [
     "src/**/*",
-    "types/express.d.ts", // Adjust the path as necessary
-    "types"
+    "src/types/express.d.ts", // Adjust the path as necessary
+    "src/types"
   ]
 }

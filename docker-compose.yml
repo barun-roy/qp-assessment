@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mysqldb2:
+    container_name: mysqlcontainerv2
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: grocery_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 'password@123#'
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - internalnet
+
+  nodeapp:
+    container_name: nodeappcontainerv2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysqldb2
+    environment:
+      DB_HOST: mysqldb2
+      DB_USER: admin
+      DB_PASS: 'password@123#'
+      DB_NAME: grocery_db
+      DB_CONNECTION_LIMIT: 10
+      DB_PORT: 3306
+      SERVER_PORT: 3000
+    networks:
+      - internalnet
+    volumes:
+      - .:/usr/code
+    command: sh -c "yarn sequelize db:migrate && yarn run start:prod"
+
+networks:
+  internalnet:
+    driver: bridge
+
+volumes:
+  db_data:

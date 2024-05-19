@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { ResponseService } from "../common/response.service";
 import { NextFunction, Request, Response } from "express";
-import { AuthUser } from "../../types/user";
+import { AuthUser } from "../types/user";
 
 const responseService = new ResponseService();
 

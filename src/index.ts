@@ -1,9 +1,9 @@
 import express from "express";
 import morgan from "morgan";
 
-import db from "./src/models";
-import userRouter from "./src/routers/userRoute";
-import groceryRouter from "./src/routers/groceryRoute";
+import db from "./models";
+import userRouter from "./routers/userRoute";
+import groceryRouter from "./routers/groceryRoute";
 
 const app = express();
 

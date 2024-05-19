@@ -1,4 +1,11 @@
-import { IsString, IsNumber, IsNotEmpty, Min } from "class-validator";
+import {
+  IsString,
+  IsNumber,
+  IsNotEmpty,
+  Min,
+  IsArray,
+  ValidateNested,
+} from "class-validator";
 
 export class CreateGroceryItemDto {
   @IsString()
@@ -33,4 +40,18 @@ export class UpdateQuantityDto {
   @IsNumber()
   @Min(0)
   quantity!: number;
+}
+
+class BookGroceryDto {
+  @IsNumber()
+  grocery_id!: number;
+
+  @IsNumber()
+  @Min(1)
+  quantity!: number;
+}
+
+export class BookingDto {
+  @IsArray()
+  items!: BookGroceryDto[];
 }

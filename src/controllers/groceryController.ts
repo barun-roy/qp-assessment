@@ -111,17 +111,6 @@ const groceryList = async (req: Request, res: Response) => {
         },
       ],
     });
-    // const groceryData = await db.tbl_user_masters.findAll({
-    //   where: { id: userId },
-    //   attributes: ["id", "first_name", "last_name", "email"],
-    //   include: [
-    //     {
-    //       model: db.tbl_grocery_masters,
-    //       attributes: ["id", "name", "price", "quantity", "created_by"],
-    //       required: false,
-    //     },
-    //   ],
-    // });
     return responseService.sent(res, 200, groceryData);
   } catch (error: any) {
     console.log("get grocery items error................", error);

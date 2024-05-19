@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post("/create", userController.createUsers);
 router.post("/login", userController.login);
+router.post("/bookGrocery", auth.authMiddleware, userController.bookGrocery);
 
 router.get(
   "/getUser/:user_id?",
@@ -13,5 +14,6 @@ router.get(
   auth.isAdmin,
   userController.getUsers
 );
+router.get("/groceryList", auth.authMiddleware, userController.showGroceryList);
 
 export default router;

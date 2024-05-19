@@ -15,12 +15,10 @@ export class CreateGroceryItemDto {
 }
 
 export class UpdateGroceryItemDto {
-
   @IsNumber()
   grocery_id!: number;
 
   @IsString()
-  @IsNotEmpty()
   name!: string;
 
   @IsNumber()
@@ -29,6 +27,9 @@ export class UpdateGroceryItemDto {
 }
 
 export class UpdateQuantityDto {
+  @IsNumber()
+  grocery_id!: number;
+
   @IsNumber()
   @Min(0)
   quantity!: number;

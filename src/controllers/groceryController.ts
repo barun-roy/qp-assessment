@@ -4,6 +4,7 @@ import { ResponseService } from "../common/response.service";
 import {
   CreateGroceryItemDto,
   UpdateGroceryItemDto,
+  UpdateQuantityDto,
 } from "../dtos/groceryItem.dto";
 import { Op } from "sequelize";
 const responseService = new ResponseService();
@@ -142,9 +143,25 @@ const deleteGrocery = async (req: Request, res: Response) => {
     let authToken = req.user;
     let userId = authToken.userId;
     let dateTime = new Date().toISOString();
+    let checkIfExists = await db.tbl_grocery_masters.findOne({
+      where: { id: groceryId },
+    });
+    if (!checkIfExists) {
+      return responseService.sent(res, 200, [], "No such items exists");
+    }
+    let groceryUserItem = await db.tbl_grocery_user_mappings.findOne({
+      where: { grocery_id: groceryId },
+    });
+    groceryUserItem = JSON.parse(JSON.stringify(groceryUserItem, null, 2));
+    if (groceryUserItem) {
+      await db.tbl_grocery_user_mappings.update(
+        { deleted_at: dateTime, deleted_by: userId },
+        { where: { grocery_id: groceryId }, transaction }
+      );
+    }
     await db.tbl_grocery_masters.update(
       { deleted_at: dateTime, deleted_by: userId },
-      { where: { id: groceryId } }
+      { where: { id: groceryId }, transaction }
     );
     await transaction.commit();
     return responseService.sent(res, 200, [], "Deleted successfully!");
@@ -162,10 +179,42 @@ const deleteGrocery = async (req: Request, res: Response) => {
  * @returns
  */
 
-const updateGroceryItem = async (req: Request, res: Response) => {
+const updateGrocery = async (req: Request, res: Response) => {
+  const { grocery_id, name, price } = req.body as UpdateGroceryItemDto;
+  let authToken = req.user;
+  let userId = authToken.userId;
+  let dateTime = new Date().toISOString();
   try {
+    let updateFields: { [key: string | number]: any } = {};
+    if (!grocery_id) {
+      return responseService.sent(res, 400, [], "Grocery Id is required");
+    }
+
+    if (name !== undefined) updateFields.name = name;
+    if (price !== undefined) updateFields.price = price;
+
+    if (Object.keys(updateFields).length === 0) {
+      return responseService.sent(res, 400, [], "No fields to update");
+    }
+
+    const updated = await db.tbl_grocery_masters.update(
+      { ...updateFields, updated_at: dateTime, updated_by: userId },
+      {
+        where: { id: grocery_id },
+      }
+    );
+
+    if (updated[0] === 0) {
+      return responseService.sent(res, 200, [], "Grocery item not found");
+    }
+    return responseService.sent(
+      res,
+      200,
+      [],
+      "Grocery item updated successfully"
+    );
   } catch (error: any) {
-    console.log("update grocery items error................", error);
+    console.log("update inventory item error................", error);
     return responseService.sent(res, 500, [], error.message);
   }
 };
@@ -178,29 +227,67 @@ const updateGroceryItem = async (req: Request, res: Response) => {
  */
 
 const updateInventory = async (req: Request, res: Response) => {
-  const { grocery_id, name, price } = req.body as UpdateGroceryItemDto;
-  const transaction = await db.sequelize.transaction();
+  const { grocery_id, quantity } = req.body as UpdateQuantityDto;
+  let authToken = req.user;
+  let userId = authToken.userId;
+  let dateTime = new Date().toISOString();
   try {
+    // let minQuantityVal = 0;
+    // let searchGroceryUser = await db.tbl_grocery_user_mappings.findAll({
+    //   where: { grocery_id: groceryId },
+    //   attributes: ["quantity"],
+    // });
+    // searchGroceryUser = JSON.parse(JSON.stringify(searchGroceryUser, null, 2));
+    // let quantityArr = searchGroceryUser.map((item: any) => item.quantity);
+    // if(quantityArr && quantityArr.length > 0){
+    //     minQuantityVal = minValue(quantityArr)
+    // }
+    // if(minQuantityVal < quantity){
+    //     await db.tbl_grocery_user_mappings.update({deleted_at:dateTime, deleted_by:userId,})
+    // }
     if (!grocery_id) {
-      await transaction.rollback();
       return responseService.sent(res, 400, [], "Grocery Id is required");
     }
+    if (!quantity) {
+      return responseService.sent(res, 400, [], "Quantity cannot be empty");
+    }
     const updated = await db.tbl_grocery_masters.update(
-      { name, price },
-      { where: { id: grocery_id }, transaction }
+      { quantity, updated_at: dateTime, updated_by: userId },
+      {
+        where: { id: grocery_id },
+      }
+    );
+
+    if (updated[0] === 0) {
+      return responseService.sent(res, 200, [], "Grocery item not found");
+    }
+    return responseService.sent(
+      res,
+      200,
+      [],
+      "Grocery quantity updated successfully"
     );
   } catch (error: any) {
-    console.log("update inventory item error................", error);
-    await transaction.rollback();
+    console.log("update grocery items error................", error);
     return responseService.sent(res, 500, [], error.message);
   }
 };
+
+// function minValue(arr: number[]) {
+//   let min = Infinity;
+//   for (let i = 0; i < arr.length; i++) {
+//     if (min > arr[i]) {
+//       min = arr[i];
+//     }
+//   }
+//   return min;
+// }
 
 const groceryController = {
   create,
   groceryList,
   deleteGrocery,
-  updateGroceryItem,
+  updateGrocery,
   updateInventory,
   bulkInsert,
 };

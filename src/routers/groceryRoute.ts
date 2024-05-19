@@ -1,10 +1,18 @@
 import { Router } from "express";
 import groceryController from "../controllers/groceryController";
 import { validateDto } from "../middleware/validate";
-import { CreateGroceryItemDto } from "../dtos/groceryItem.dto";
+import {
+  CreateGroceryItemDto,
+  UpdateGroceryItemDto,
+  UpdateQuantityDto,
+} from "../dtos/groceryItem.dto";
 import auth from "../middleware/auth";
 
 const router = Router();
+
+/***
+ * POST
+ */
 
 router.post(
   "/create",
@@ -13,8 +21,20 @@ router.post(
   validateDto(CreateGroceryItemDto),
   groceryController.create
 );
-router.post("/update/:id", groceryController.updateGroceryItem);
-router.post("/update/:id/inventory", groceryController.updateInventory);
+router.post(
+  "/update",
+  auth.authMiddleware,
+  auth.isAdmin,
+  validateDto(UpdateGroceryItemDto),
+  groceryController.updateGrocery
+);
+router.post(
+  "/update/inventory",
+  auth.authMiddleware,
+  auth.isAdmin,
+  validateDto(UpdateQuantityDto),
+  groceryController.updateInventory
+);
 router.post(
   "/remove",
   auth.authMiddleware,
@@ -27,6 +47,10 @@ router.post(
   auth.isAdmin,
   groceryController.bulkInsert
 );
+
+/**
+ * GET
+ */
 
 router.get(
   "/list",

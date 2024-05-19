@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "0128c25e-",
+		"name": "grocery-booking-app",
+		"schema": "",
+		"_exporter_id": "20647171"
+	},
+	"item": [
+		{
+			"name": "user/create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"John1\",\r\n    \"last_name\": \"Doe\",\r\n    \"email\": \"john1.doe@example.com\",\r\n    \"password\": \"password\",\r\n    \"role\":\"admin\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:4001/api/v1/user/create"
+			},
+			"response": []
+		},
+		{
+			"name": "user/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"john.doe@example.com\",\r\n    \"password\":\"password\"\r\n}\r\n\r\n// {\r\n//     \"email\":\"jane.doe@example.com\",\r\n//     \"password\":\"password\"\r\n// }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:4001/api/v1/user/login"
+			},
+			"response": []
+		},
+		{
+			"name": "getUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:4001/api/v1/user/getUser"
+			},
+			"response": []
+		},
+		{
+			"name": "grocery/create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Potato\",\r\n    \"price\": 3,\r\n    \"quantity\": 15\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:4001/api/v1/grocery/create"
+			},
+			"response": []
+		},
+		{
+			"name": "grocery/list",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:4001/api/v1/grocery/list"
+			},
+			"response": []
+		},
+		{
+			"name": "grocery/bulkInsert",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"name\": \"Apples\",\r\n    \"price\": 2,\r\n    \"quantity\": 10\r\n  },\r\n  {\r\n    \"name\": \"Bananas\",\r\n    \"price\": 1,\r\n    \"quantity\": 15\r\n  },\r\n  {\r\n    \"name\": \"Milk\",\r\n    \"price\": 3,\r\n    \"quantity\": 5\r\n  },\r\n  {\r\n    \"name\": \"Bread\",\r\n    \"price\": 2,\r\n    \"quantity\": 8\r\n  },\r\n  {\r\n    \"name\": \"Eggs\",\r\n    \"price\": 4,\r\n    \"quantity\": 12\r\n  },\r\n  {\r\n    \"name\": \"Cheese\",\r\n    \"price\": 5,\r\n    \"quantity\": 4\r\n  },\r\n  {\r\n    \"name\": \"Oranges\",\r\n    \"price\": 3,\r\n    \"quantity\": 20\r\n  },\r\n  {\r\n    \"name\": \"Cereal\",\r\n    \"price\": 3,\r\n    \"quantity\": 6\r\n  },\r\n  {\r\n    \"name\": \"Pasta\",\r\n    \"price\": 2,\r\n    \"quantity\": 10\r\n  },\r\n  {\r\n    \"name\": \"Tomatoes\",\r\n    \"price\": 1,\r\n    \"quantity\": 12\r\n  }\r\n]\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:4001/api/v1/grocery/bulkInsert"
+			},
+			"response": []
+		},
+		{
+			"name": "grocery/remove",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":180\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:4001/api/v1/grocery/remove"
+			},
+			"response": []
+		},
+		{
+			"name": "user/groceryList",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:4001/api/v1/user/groceryList"
+			},
+			"response": []
+		},
+		{
+			"name": "user/bookGrocery",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"items\":[\r\n        {\r\n            \"grocery_id\":172,\r\n            \"quantity\":4\r\n        },\r\n        {\r\n            \"grocery_id\":164,\r\n            \"quantity\":2\r\n        },\r\n        {\r\n            \"grocery_id\":165,\r\n            \"quantity\":2\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:4001/api/v1/user/bookGrocery"
+			},
+			"response": []
+		},
+		{
+			"name": "grocery/update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"grocery_id\":172,\r\n    \"name\":\"Apple\",\r\n    \"price\":7\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:4001/api/v1/grocery/update"
+			},
+			"response": []
+		},
+		{
+			"name": "update/inventory",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"grocery_id\":172,\r\n    \"quantity\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:4001/api/v1/grocery/update/inventory"
+			},
+			"response": []
+		}
+	]
+}
